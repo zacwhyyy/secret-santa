@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+    <title>Secret Santa</title>
+    
+  </head>
+  <body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Secret Santa</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="http://limzhiyang.com/codetolearn/" target="_blank">Code to Learn</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="http://limzhiyang.com/profile/" target="_blank">About Me</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <div class="row pt-5">
+          <div class="col-1 col-sm-3"></div>
+          <div class="col-10 col-sm-6">
+            <h1 class="text-center">Secret Santa</h1>
+            <p class="text-center">Ho, ho, ho! Merry gift-giving!</p>
+            <div class="form-group">
+              <textarea class="form-control mt-3" id="names" rows="3" placeholder="Please seperate each name with a comma."></textarea>
+              <button type="submit" id="submit" class="btn btn-success mt-3 w-100 mb-3">Pick Santas</button>
+            </div>
+            <div id="result-section">
+              <hr>
+              <h5 class="text-center mt-3">Result:</h5>
+              <p id="result" class="text-center">-</p>
+           </div>
+          </div>
+          <div class="col-1 col-sm-3"></div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+  </body>
+</html>
+
+<script>
+  var myTextbox = document.getElementById("names"); 
+  var myBtn = document.getElementById("submit");
+  var resultField = document.getElementById("result");
+  var person;
+  var partner;
+  var originalArrangement;
+  var results = "";
+
+  
+  myBtn.addEventListener("click", function(){
+
+    if (myTextbox.value == "") {
+      alert("The field is empty, please type something!");
+    } else {
+      var namesInput = myTextbox.value;
+
+      //split the name and store individual name in an array
+      person = namesInput.split(",");
+      originalArrangement = namesInput.split(",");
+
+      //clear form input after form submission
+      clearInput();
+
+      partner = sattoloCycle(person);
+
+      results = ""; //clear the results field when user press the button again
+      for (var x = 0; x < person.length; x++) { 
+        results += '<strong>' + originalArrangement[x] + '</strong>' + ' buys a gift for ' + '<strong>' + partner[x] + '</strong>' + '<br>';
+      }
+      
+      //display results
+      resultField.innerHTML = results;
+    }
+
+  });
+  
+  //sattolo's algorithm
+  //https://danluu.com/sattolo/
+  function sattoloCycle(myArray) {
+    for(var i = myArray.length; i-- > 1; ) {
+      var j = Math.floor(Math.random() * i);
+      var tmp = myArray[i];
+      myArray[i] = myArray[j];
+      myArray[j] = tmp;
+    }
+    return myArray;
+  }
+
+  function clearInput() {
+    var emptyField = "";
+    myTextbox.value = emptyField;
+  }
+
+  /*  
+  ***** Fisher–Yates shuffle *****
+
+  function shuffleArray(myArray) {
+      var j, x, i;
+      for(i = myArray.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = myArray[i];
+        myArray[i] = myArray[j];
+        myArray[j] = x;
+      }
+      console.log(myArray);
+      return myArray;
+  }
+  */
+</script>
